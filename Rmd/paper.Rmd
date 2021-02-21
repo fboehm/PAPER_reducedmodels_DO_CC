@@ -1,0 +1,217 @@
+---
+title: "Allelic series-informed QTL mapping in multiparental populations"
+author:
+  - Frederick J. Boehm:
+      email: frederick.boehm@gmail.com
+      institute: [UMMS]
+      correspondence: true
+  - Yourfirstname Yourlastname:
+      email: fl@another.edu
+      institute: [FDA]
+      correspondence: false
+institute:
+  - UMMS: University of Massachusetts Medical School
+  - FDA: United States Food and Drug Administration
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+    bookdown::html_document2:
+      fig_caption: yes
+      pandoc_args:
+      - --lua-filter=../templates/scholarly-metadata.lua
+      - --lua-filter=../templates/author-info-blocks.lua
+      - --lua-filter=../templates/pagebreak.lua
+    bookdown::pdf_document2:
+      fig_caption: yes
+      pandoc_args:
+      - --lua-filter=../templates/scholarly-metadata.lua
+      - --lua-filter=../templates/author-info-blocks.lua
+      - --lua-filter=../templates/pagebreak.lua  
+    bookdown::word_document2:
+      fig_caption: yes
+      reference_docx: "../templates/template.docx" # Insert path for the DOCX file
+      pandoc_args:
+      - --lua-filter=../templates/scholarly-metadata.lua
+      - --lua-filter=../templates/author-info-blocks.lua
+      - --lua-filter=../templates/pagebreak.lua
+bibliography: references.bib
+link-citations: true
+csl: "../templates/journal-of-archaeological-science.csl" # Insert path for the bib-style
+abstract: |
+  Multiparental mouse populations enable high-resolution, reproducible QTL mapping for complex traits. 
+keywords: |
+  QTL mapping; Multiparental populations
+highlights: |
+  These are the highlights. 
+---
+
+
+<!-- This is the format for text comments that will be ignored during renderings. Do not put R code in these comments because it will not be ignored. -->
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  comment = "#>",
+  fig.path = "../figures/",
+  dpi = 300
+)
+```
+
+# Introduction
+
+Multiparental mouse populations, such as the Diversity Outbred (DO) and Collaborative Cross (CC), have revolutionized systems genetics. 
+Researchers have studied diverse infectious diseases in both cohorts. 
+
+
+
+
+The CC and DO arise from the same eight inbred founder lines and, as such, incorporate the same collection of genetic variants. The CC are highly homozygous inbred lines, while the DO are a highly heterozygous outbred stock of genetically unique mice.
+
+The strengths of these two cohorts - serial phenotyping in the CC and genetic uniqueness among DO mice - have led researchers to study complex traits in both cohorts.
+
+Measurements of similar traits in both CC and DO mice presents opportunities to leverage results in one cohort in efforts to identify causal loci in a second cohort.
+
+Standard QTL mapping methods allow a QTL to have eight alleles (one allele per founder) in the CC and DO, regardless of the true number of functional alleles in the eight founders. Enhancements in statistical power to detect QTL may be realized in cases where we know, or infer, the true allelic series.
+
+Recent methodological advances provide quantitative tools to infer allelic series at QTL. Drawing on nonparametric bayesian methods, @crouse2020inferring implemented a Chinese restaurant process-based method to infer allelic series in multiparental populations. They use the term "allelic series" to refer to the mapping of founder alleles to functional alleles.
+
+Despite recent advances, identifying causal genetic variants remains a challenge for systems genetics studies. Current 
+methods use approximate Bayesian credible intervals to characterize QTL position. An approximate Bayesian credible interval, 
+with a uniform prior distribution, is determined by first calculating the profile likelihood, or, equivalently, the profile 
+posterior density, from the LODs [@manichaikul2006poor]. The narrowest region that contains 95% of the posterior density is 
+termed the approximate 95% Bayesian credible interval.
+
+
+
+
+
+
+
+
+
+# Background
+
+
+
+# Methods
+
+We sought to leverage QTL mapping results from one cohort to inform QTL mapping in the other. We 
+first mapped QTLs in a large cohort of more than 700 DO mice. For each of the peaks that exceeded a 
+LOD threshold of 5, we inferred allelic series at the QTL peak position with Tree-based Inference of 
+Multiallelism with Bayesian Regression (TIMBR). We drew 10,000 samples from the joint posterior 
+distribution and recorded the most frequently observed allelic series.
+
+We used each of two priors when performing inferences of allelic series. 
+
+## Phenotyping procedures in DO
+
+
+
+## Phenotyping procedures in CC
+
+
+
+## Data structures
+
+
+
+### Phenotype data
+
+We measured clinical traits in two cohorts of mice, one cohort of 763 DOs and one cohort of CC mice from 53 inbred lines.
+
+For analysis of CC mice, we mapped each line's mean trait value.
+
+We measured nine clinical traits in DO and \_\_ traits in the CC mice. 
+
+### Genotype data
+
+We genotyped DO mice with the GigaMUGA SNP microarray. We inferred founder haplotype probabilities at every locus with a hidden Markov model [@broman2012haplotype;@broman2012genotype;@broman2019r].
+
+
+## Statistical models
+
+
+
+We proceeded by restricting our statistical models for the QTL scan. In traditional QTL scans, one fits a linear model like
+
+$$Trait = p_A\beta_A + p_B\beta_B + p_C\beta_C + p_D\beta_D + p_E\beta_E + p_F\beta_F + p_G\beta_G + p_H\beta_H + \epsilon$$
+with $$\epsilon \sim N(0, \Sigma)$$
+
+However, if two lines, say A and B, share an allele, then we are fitting too many parameters in our model. We'd have greater statistical power if we restricted our model to acknowledge that $\beta_A = \beta_B$:
+
+$$Trait = (p_A + p_B)\beta_A + p_C\beta_C + p_D\beta_D + p_E\beta_E + p_F\beta_F + p_G\beta_G + p_H\beta_H + \epsilon$$
+
+In fact, we can extend this reasoning to the entire collection of alleles at a QTL. For example, if lines A, B, and C share allele 1, D and E share allele 2, and F, G, and H share allele 3, then we would enhance statistical power (compared to traditional methods) by modeling the trait as:
+
+$$Trait = (p_A + p_B + p_C)\beta_A + (p_D + p_E)\beta_D + (p_F + p_G + p_H)\beta_F + \epsilon$$
+The information needed for this model restriction is contained in the allelic series that we infer with TIMBR.
+
+
+## Allelic series-informed QTL mapping
+
+We inferred allelic series at all detected DO QTL. For each allelic series, we mapped (with appropriately restricted models) the \_\_ traits in the Collaborative Cross mice. That is, we used CC mouse traits and corresponding CC mouse genotypes in fitting restricted models.
+
+We used the inferred DO allelic series to restrict models when mapping in the CC. We then fitted restricted models for all traits at all genomic positions in the CC. We quantified statistical significance with approximate permutation tests, with 1000 permutations each.
+
+
+
+
+
+# Results
+
+```{r get-data, eval = FALSE}
+# Note the path that we need to use to access our data files when rendering this document
+my_data <- read.csv(here::here('analysis/data/raw_data/my_csv_file.csv'))
+```
+
+```{r demo-plot, eval = FALSE, fig.cap="A plot of random numbers"}
+plot(rnorm(10))
+```
+
+Figure \@ref(fig:demo-plot) shows how we can have a caption and cross-reference for a plot
+
+```{r demo-inline-code, eval = FALSE}
+x <- round(pi, 2)
+```
+
+
+# Discussion
+
+
+
+# Conclusion
+
+
+
+# Acknowledgements
+
+We're grateful to Wesley Crouse and William Valdar, who freely shared and supported their software, TIMBR. 
+
+<!-- The following line inserts a page break  -->
+\newpage
+
+# References 
+<!-- The following line ensures the references appear here for the MS Word or HTML output files, rather than right at the end of the document (this will not work for PDF files):  -->
+<div id="refs"></div>
+
+\newpage
+
+### Colophon
+
+This report was generated on `r Sys.time()` using the following computational environment and dependencies: 
+
+```{r colophon, cache = FALSE}
+# which R packages and versions?
+if ("devtools" %in% installed.packages()) devtools::session_info()
+```
+
+The current Git commit details are:
+
+```{r}
+# what commit is this file at? 
+if ("git2r" %in% installed.packages() & git2r::in_repository(path = ".")) git2r::repository(here::here())  
+```
+
+
