@@ -69,7 +69,7 @@ Researchers have studied diverse infectious diseases in both cohorts.
 
 The CC and DO arise from the same eight inbred founder lines and, as such, incorporate the same collection of genetic variants. The CC are highly homozygous inbred lines, while the DO are a highly heterozygous outbred stock of genetically unique mice.
 
-The strengths of these two cohorts - serial phenotyping in the CC and genetic uniqueness among DO mice - have led researchers to study complex traits in both cohorts.
+The strengths of these two cohorts - serial phenotyping in the CC and genetic uniqueness among DO mice - have led researchers to study complex traits in both populations.
 
 Measurements of similar traits in both CC and DO mice presents opportunities to leverage results in one cohort in efforts to identify causal loci in a second cohort.
 
